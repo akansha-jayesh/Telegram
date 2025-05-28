@@ -1,0 +1,73 @@
+import telebot
+import random
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+bot = telebot.TeleBot(os.getenv("BOT_TOKEN"))
+
+# Shayari Collections
+SHER = [
+    "ज़िंदगी एक किताब है, और हर दिन एक नया पन्ना है।",
+    "सपनों की उड़ान है, मंज़िलें खुद चलकर आती हैं।"
+]
+
+CHAR_LINE_SHAYARI = [
+    "चाँद की चाँदनी में छुपा है एक राज़,\nहर रात मुझे दिखाती है तेरे नज़दीक होने का अंदाज़।",
+    "सफर में चलते रहो, रुकना नहीं,\nमंज़िल मिलती है उनको जो थकते नहीं।"
+]
+
+MOTIVATION_SHAYARI = [
+    "हार मत मानो, कोशिश जारी रखो,\nएक दिन मंज़िल तुम्हारे कदम चूमेगी।",
+    "मुश्किलों से डरो मत, वे रास्ता बनाती हैं,\nअसली ताकत उसी में छुपी होती है।"
+]
+
+SAD_SHAYARI = [
+    "तेरे बिना अधूरा हूँ मैं,\nतू ही मेरी ज़िंदगी का हिस्सा है।",
+    "ख़ामोशी से बहती है ये आँसू की धारा,\nदिल में छुपा है कोई पुराना नजारा।"
+]
+
+GHAZAL = [
+    "दिल-ए-नादान तुझे हुआ क्या है?\nआख़िर इस दर्द की दवा क्या है?",
+    "कहाँ मैख़ाना कहाँ मदरा-ख़ाना\nऐसामज़ा है, जहाँ शराब क्या है?"
+]
+
+# Command Handlers
+
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, "नमस्ते! मैं हूँ आपका शायरी बॉट।\n\nकमांड्स:\n/sher - शेर\n/charline - 4 लाइन शायरी\n/motivation - मोटिवेशनल शायरी\n/sad - सैड शायरी\n/ghazal - ग़ज़ल\n/menu - सभी कमांड देखें")
+
+@bot.message_handler(commands=['menu'])
+def menu(message):
+    text = """
+/shers - शेर प्राप्त करें
+/charline - 4 लाइन शायरी
+/motivation - मोटिवेशनल शायरी
+/sad - उदास शायरी
+/ghazal - ग़ज़ल
+"""
+    bot.reply_to(message, text)
+
+@bot.message_handler(commands=['sher'])
+def send_sher(message):
+    bot.reply_to(message, random.choice(SHER))
+
+@bot.message_handler(commands=['charline'])
+def send_charline(message):
+    bot.reply_to(message, random.choice(CHAR_LINE_SHAYARI))
+
+@bot.message_handler(commands=['motivation'])
+def send_motivation(message):
+    bot.reply_to(message, random.choice(MOTIVATION_SHAYARI))
+
+@bot.message_handler(commands=['sad'])
+def send_sad(message):
+    bot.reply_to(message, random.choice(SAD_SHAYARI))
+
+@bot.message_handler(commands=['ghazal'])
+def send_ghazal(message):
+    bot.reply_to(message, random.choice(GHAZAL))
+
+bot.polling()
